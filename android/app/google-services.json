@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "804227452203",
+    "project_id": "busrouteapp-17b21",
+    "storage_bucket": "busrouteapp-17b21.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804227452203:android:c753d5897b388694dac96e",
+        "android_client_info": {
+          "package_name": "com.example.flutter_bus_route_reminder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtJHQWHlBRx5JoIHvCcNU10hCylOwaQ_Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
