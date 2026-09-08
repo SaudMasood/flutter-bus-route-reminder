@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/app_colors.dart';
 import '../admin/auth/screen/admin_login_screen.dart';
+import '../user/auth/screen/login_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -59,18 +60,17 @@ class OnboardingScreen extends StatelessWidget {
 
               const Spacer(),
 
-              // User Login
               SizedBox(
                 width: double.infinity,
                 height: 52,
                 child: ElevatedButton(
                    onPressed: () {
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (_) => const LoginScreen(),
-                  //     ),
-                  //   );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const LoginScreen(),
+                      ),
+                    );
                   },
                   child: const Text(
                     'Continue as User',

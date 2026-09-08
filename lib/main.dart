@@ -9,6 +9,10 @@ import 'core/services/notification services/notification_service.dart';
 import 'features/admin/auth/bloc/adminauth_bloc.dart';
 import 'features/admin/dashboard/bloc/dashboard_bloc.dart';
 
+import 'features/user/auth/bloc/auth_bloc.dart';
+import 'features/user/home/bloc/home_bloc.dart';
+import 'features/user/profile/bloc/profile_bloc.dart';
+
 import 'features/splash/screen/splash_screen.dart';
 
 import 'firebase_options.dart';
@@ -21,15 +25,29 @@ Future<void> main() async {
   );
 
   await NotificationService.initialize();
-
+  NotificationService.listenForTokenRefresh();
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (_) => AdminAuthBloc(),
         ),
+
+
         BlocProvider(
           create: (_) => AdminBusBloc(),
+        ),
+
+        BlocProvider(
+          create: (_) => UserAuthBloc(),
+        ),
+
+        BlocProvider(
+          create: (_) => HomeBloc(),
+        ),
+
+        BlocProvider(
+          create: (_) => ProfileBloc(),
         ),
       ],
       child: const MyApp(),

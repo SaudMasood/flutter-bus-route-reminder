@@ -1,0 +1,17 @@
+[33mcommit 67ad4c073669b869c0c77bc57578f7cb6faaac81[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Saud Masood <saudmasood@owasoftltd.com>
+Date:   Tue Sep 8 22:07:06 2026 +0500
+
+    chore: ignore Firebase configuration
+
+[33mcommit 14bff77bc577c98a2aa9678e4c1a00826ef30311[m
+Author: Saud Masood <saudmasood974@gmail.com>
+Date:   Tue Sep 8 21:01:06 2026 +0500
+
+    feat: add Firebase setup and project structure
+
+[33mcommit 4103316d3b9210f704c5807c06b5834a29cc3959[m[33m ([m[1;31mupstream/main[m[33m, [m[1;31mupstream/HEAD[m[33m)[m
+Author: Saud Masood <saudmasood974@gmail.com>
+Date:   Tue Sep 8 04:55:09 2026 +0500
+
+    chore: initialize bus route reminder project
