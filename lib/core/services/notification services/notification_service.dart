@@ -1,11 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+@pragma('vm:entry-point')
+Future<void> firebaseMessagingBackgroundHandler(
+    RemoteMessage message,
+    ) async {
+  await Firebase.initializeApp();
 
+  final title =
+      message.notification?.title ?? 'Notification';
+
+  final body =
+      message.notification?.body ?? '';
+
+  print('Background FCM received');
+  print('Title: $title');
+  print('Body: $body');
+}
 class NotificationService {
   static final FirebaseMessaging messaging =
       FirebaseMessaging.instance;
@@ -16,9 +32,9 @@ class NotificationService {
   static final FlutterLocalNotificationsPlugin localNotifications =
   FlutterLocalNotificationsPlugin();
 
-  // =========================
+
   // NOTIFICATION CHANNELS
-  // =========================
+
 
   static const AndroidNotificationChannel notificationChannel =
   AndroidNotificationChannel(
@@ -36,9 +52,7 @@ class NotificationService {
     importance: Importance.high,
   );
 
-  // =========================
   // INITIALIZE
-  // =========================
 
   static Future<void> initialize() async {
     tz.initializeTimeZones();
@@ -60,9 +74,8 @@ class NotificationService {
     listenForForegroundMessages();
   }
 
-  // =========================
   // LOCAL NOTIFICATION INIT
-  // =========================
+
 
   static Future<void> initializeLocalNotifications() async {
     const androidSettings = AndroidInitializationSettings(
@@ -78,9 +91,7 @@ class NotificationService {
     );
   }
 
-  // =========================
   // NOTIFICATION PERMISSION
-  // =========================
 
   static Future<void> requestNotificationPermission() async {
     if (kIsWeb) {
@@ -101,9 +112,9 @@ class NotificationService {
     await androidPlugin?.requestNotificationsPermission();
   }
 
-  // =========================
+
   // EXACT ALARM PERMISSION
-  // =========================
+
 
   static Future<void> requestExactAlarmPermission() async {
     if (kIsWeb) {
@@ -118,9 +129,8 @@ class NotificationService {
     await androidPlugin?.requestExactAlarmsPermission();
   }
 
-  // =========================
+
   // CREATE CHANNELS
-  // =========================
 
   static Future<void> createNotificationChannels() async {
     if (kIsWeb) {
@@ -141,9 +151,8 @@ class NotificationService {
     );
   }
 
-  // =========================
   // SUBSCRIBE ALL USERS
-  // =========================
+
 
   static Future<void> subscribeToAllUsers() async {
     if (kIsWeb) {
@@ -155,9 +164,7 @@ class NotificationService {
     );
   }
 
-  // =========================
   // FOREGROUND FCM
-  // =========================
 
   static void listenForForegroundMessages() {
     FirebaseMessaging.onMessage.listen(
@@ -176,9 +183,7 @@ class NotificationService {
     );
   }
 
-  // =========================
   // SHOW FCM NOTIFICATION
-  // =========================
 
   static Future<void> showNotification({
     required String title,
