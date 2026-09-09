@@ -24,12 +24,13 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  await NotificationService.initialize();
-  NotificationService.listenForTokenRefresh();
   FirebaseMessaging.onBackgroundMessage(
     firebaseMessagingBackgroundHandler,
   );
+
+  await NotificationService.initialize();
+  NotificationService.listenForTokenRefresh();
+
   runApp(
     MultiBlocProvider(
       providers: [
