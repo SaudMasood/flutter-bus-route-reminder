@@ -36,67 +36,59 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: AppColors.primary,
       body: SafeArea(
         child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 120,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.directions_bus_rounded,
-                    size: 65,
-                    color: AppColors.primary,
-                  ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Logo
+              Container(
+                height: 120,
+                width: 120,
+                decoration: BoxDecoration(
+                  color: AppColors.cream,
+                  borderRadius: BorderRadius.circular(35),
                 ),
-
-                const SizedBox(height: 30),
-
-                Text(
-                  AppConstants.appName,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: AppColors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: const Icon(
+                  Icons.directions_bus_rounded,
+                  size: 65,
+                  color: AppColors.primary,
                 ),
+              ),
 
-                const SizedBox(height: 12),
+              const SizedBox(height: 28),
 
-                const Text(
-                  'Never miss your bus.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 16,
-                  ),
+              // App Name
+              Text(
+                AppConstants.appName,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppColors.cream,
+                  fontSize: 27,
+                  fontWeight: FontWeight.w800,
                 ),
+              ),
 
-                const SizedBox(height: 50),
+              const SizedBox(height: 8),
 
-                const SizedBox(
-                  height: 28,
-                  width: 28,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                    color: AppColors.white,
-                  ),
+              const Text(
+                'Smart travel. Simple reminders.',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
                 ),
-              ],
-            ),
+              ),
+
+              const SizedBox(height: 35),
+
+              // Loading
+              const SizedBox(
+                height: 24,
+                width: 24,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  color: AppColors.cream,
+                ),
+              ),
+            ],
           ),
         ),
       ),

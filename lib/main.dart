@@ -26,26 +26,24 @@ Future<void> main() async {
 
   await NotificationService.initialize();
   NotificationService.listenForTokenRefresh();
+
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (_) => AdminAuthBloc(),
         ),
-
-
         BlocProvider(
           create: (_) => AdminBusBloc(),
         ),
 
+
         BlocProvider(
           create: (_) => UserAuthBloc(),
         ),
-
         BlocProvider(
           create: (_) => HomeBloc(),
         ),
-
         BlocProvider(
           create: (_) => ProfileBloc(),
         ),

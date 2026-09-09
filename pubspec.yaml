@@ -19,6 +19,8 @@ dependencies:
   firebase_auth: ^6.6.1
   cloud_firestore: ^6.9.0
   firebase_messaging: ^16.6.0
+  timezone: ^0.10.1
+  flutter_local_notifications: ^19.4.0
 
 dev_dependencies:
   flutter_test:

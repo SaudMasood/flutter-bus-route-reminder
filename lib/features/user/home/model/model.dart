@@ -26,13 +26,11 @@ class ReminderModel {
       String id,
       Map<String, dynamic> data,
       ) {
-    final timestamp = data['reminderTime'] as Timestamp;
-
     return ReminderModel(
       id: id,
       userId: data['userId'] ?? '',
       busId: data['busId'] ?? '',
-      reminderTime: timestamp.toDate(),
+      reminderTime: (data['reminderTime'] as Timestamp).toDate(),
     );
   }
 }

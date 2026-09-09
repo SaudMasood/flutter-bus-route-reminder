@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/services/notification services/notification_service.dart';
 import '../../../admin/dashboard/model/bus_model.dart';
 
 import '../model/model.dart';
@@ -9,8 +10,11 @@ import 'home_event.dart';
 import 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore =
+      FirebaseFirestore.instance;
+
+  final FirebaseAuth auth =
+      FirebaseAuth.instance;
 
   HomeBloc() : super(HomeInitial()) {
     on<GetBusesRequested>(_getBuses);
@@ -19,7 +23,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<SetReminderRequested>(_setReminder);
   }
 
-  // Get buses
+  // =========================
+  // GET BUSES
+  // =========================
+
   Future<void> _getBuses(
       GetBusesRequested event,
       Emitter<HomeState> emit,
@@ -44,6 +51,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ),
       );
     } catch (e) {
+      print('Get buses error: $e');
+
       emit(
         const HomeFailure(
           'Failed to load bus routes',
@@ -52,13 +61,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  // Select bus
+  // =========================
+  // SELECT BUS
+  // =========================
+
   void _selectBus(
       BusSelected event,
       Emitter<HomeState> emit,
       ) {
     if (state is HomeLoaded) {
-      final currentState = state as HomeLoaded;
+      final currentState =
+      state as HomeLoaded;
 
       emit(
         currentState.copyWith(
@@ -68,23 +81,31 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
-  // Select reminder time
+  // =========================
+  // SELECT TIME
+  // =========================
+
   void _selectReminderTime(
       ReminderTimeSelected event,
       Emitter<HomeState> emit,
       ) {
     if (state is HomeLoaded) {
-      final currentState = state as HomeLoaded;
+      final currentState =
+      state as HomeLoaded;
 
       emit(
         currentState.copyWith(
-          selectedReminderTime: event.reminderTime,
+          selectedReminderTime:
+          event.reminderTime,
         ),
       );
     }
   }
 
-  // Save reminder
+  // =========================
+  // SET REMINDER
+  // =========================
+
   Future<void> _setReminder(
       SetReminderRequested event,
       Emitter<HomeState> emit,
@@ -93,9 +114,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       return;
     }
 
-    final currentState = state as HomeLoaded;
+    final currentState =
+    state as HomeLoaded;
 
-    // Check bus
+    // Bus check
     if (currentState.selectedBusId == null) {
       emit(
         const HomeFailure(
@@ -105,7 +127,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       return;
     }
 
-    // Check reminder time
+    // Time check
     if (currentState.selectedReminderTime == null) {
       emit(
         const HomeFailure(
@@ -115,7 +137,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       return;
     }
 
-    // Check login
+    // Login check
     final user = auth.currentUser;
 
     if (user == null) {
@@ -128,11 +150,36 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     try {
+      // Find selected bus
+      final selectedBus =
+      currentState.buses.firstWhere(
+            (bus) =>
+        bus.id ==
+            currentState.selectedBusId,
+      );
+
+      // Notification ID
+      final notificationId =
+      DateTime.now()
+          .millisecondsSinceEpoch
+          .remainder(2147483647);
+
+      // Schedule local notification
+      await NotificationService.scheduleReminder(
+        id: notificationId,
+        reminderTime:
+        currentState.selectedReminderTime!,
+        busNumber: selectedBus.busNumber,
+        route: selectedBus.route,
+      );
+
+      // Save reminder to Firestore
       final reminder = ReminderModel(
         id: '',
         userId: user.uid,
         busId: currentState.selectedBusId!,
-        reminderTime: currentState.selectedReminderTime!,
+        reminderTime:
+        currentState.selectedReminderTime!,
       );
 
       await firestore
@@ -141,22 +188,29 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         reminder.toFirestore(),
       );
 
+      print('REMINDER SAVED TO FIRESTORE');
+
       emit(
         const ReminderSuccess(
           'Reminder set successfully',
         ),
       );
 
-      // Clear selected values
+      // Keep buses after success
       emit(
         HomeLoaded(
           buses: currentState.buses,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
+      print('==============================');
+      print('REMINDER ERROR: $e');
+      print('STACK TRACE: $stackTrace');
+      print('==============================');
+
       emit(
-        const HomeFailure(
-          'Failed to set reminder',
+        HomeFailure(
+          'Reminder failed: $e',
         ),
       );
     }

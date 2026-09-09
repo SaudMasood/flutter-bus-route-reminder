@@ -10,26 +10,72 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.cream,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
+              const SizedBox(height: 30),
+
+              // Top Logo
+              Row(
+                children: [
+                  Container(
+                    height: 45,
+                    width: 45,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: const Icon(
+                      Icons.directions_bus_rounded,
+                      color: AppColors.cream,
+                      size: 26,
+                    ),
+                  ),
+
+                  const SizedBox(width: 12),
+
+                  const Text(
+                    'Bus Route',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ],
+              ),
+
               const Spacer(),
 
-              // Bus Icon
+              // Main Bus Illustration
               Container(
-                height: 150,
-                width: 150,
+                height: 220,
+                width: double.infinity,
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.directions_bus_rounded,
-                  size: 85,
                   color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(35),
+                ),
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.directions_bus_rounded,
+                      size: 105,
+                      color: AppColors.cream,
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      'Your Journey, Simplified',
+                      style: TextStyle(
+                        color: AppColors.cream,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
@@ -40,31 +86,32 @@ class OnboardingScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.black,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.primary,
                 ),
               ),
 
-              const SizedBox(height: 15),
+              const SizedBox(height: 12),
 
               const Text(
-                'Track bus routes, check departure times '
-                    'and get reminders for your journey.',
+                'Find bus routes, check departure times '
+                    'and get timely reminders.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 16,
-                  color: AppColors.grey,
+                  fontSize: 15,
                   height: 1.5,
+                  color: AppColors.grey,
                 ),
               ),
 
               const Spacer(),
 
+              // User Button
               SizedBox(
                 width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                   onPressed: () {
+                height: 54,
+                child: ElevatedButton.icon(
+                  onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -72,23 +119,33 @@ class OnboardingScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Text(
+                  icon: const Icon(
+                    Icons.person_rounded,
+                  ),
+                  label: const Text(
                     'Continue as User',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: AppColors.cream,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
                 ),
               ),
 
-              const SizedBox(height: 15),
+              const SizedBox(height: 12),
 
-              // Admin Login
+              // Admin Button
               SizedBox(
                 width: double.infinity,
-                height: 52,
-                child: OutlinedButton(
+                height: 54,
+                child: OutlinedButton.icon(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -97,27 +154,40 @@ class OnboardingScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: const Text(
+                  icon: const Icon(
+                    Icons.admin_panel_settings_rounded,
+                  ),
+                  label: const Text(
                     'Continue as Admin',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.primary,
+                    side: const BorderSide(
+                      color: AppColors.primary,
+                      width: 1.5,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
                 ),
               ),
 
-              const SizedBox(height: 25),
+              const SizedBox(height: 20),
 
               const Text(
                 'Bus Route & Reminder',
                 style: TextStyle(
+                  fontSize: 12,
                   color: AppColors.grey,
-                  fontSize: 13,
                 ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
             ],
           ),
         ),

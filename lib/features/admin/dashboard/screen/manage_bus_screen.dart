@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/app_colors.dart';
 import '../bloc/dashboard_bloc.dart';
 import '../bloc/dashboard_event.dart';
 import '../bloc/dashboard_state.dart';
@@ -37,7 +38,13 @@ class _ManageBusScreenState extends State<ManageBusScreen> {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Update Bus'),
+          title: const Text(
+            'Update Bus',
+            style: TextStyle(
+              color: AppColors.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -47,12 +54,18 @@ class _ManageBusScreenState extends State<ManageBusScreen> {
                   labelText: 'Bus Number',
                 ),
               ),
+
+              const SizedBox(height: 10),
+
               TextField(
                 controller: routeController,
                 decoration: const InputDecoration(
                   labelText: 'Route',
                 ),
               ),
+
+              const SizedBox(height: 10),
+
               TextField(
                 controller: timeController,
                 decoration: const InputDecoration(
@@ -68,6 +81,7 @@ class _ManageBusScreenState extends State<ManageBusScreen> {
               },
               child: const Text('Cancel'),
             ),
+
             ElevatedButton(
               onPressed: () {
                 context.read<AdminBusBloc>().add(
@@ -100,14 +114,17 @@ class _ManageBusScreenState extends State<ManageBusScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.cream,
       appBar: AppBar(
-        title: const Text('Manage Buses'),
+        title: const Text('Manage Bus Routes'),
       ),
       body: BlocConsumer<AdminBusBloc, AdminBusState>(
         listener: (context, state) {
           if (state is AdminBusSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+              SnackBar(
+                content: Text(state.message),
+              ),
             );
 
             context.read<AdminBusBloc>().add(
@@ -117,7 +134,9 @@ class _ManageBusScreenState extends State<ManageBusScreen> {
 
           if (state is AdminBusFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+              SnackBar(
+                content: Text(state.message),
+              ),
             );
           }
         },
@@ -131,26 +150,56 @@ class _ManageBusScreenState extends State<ManageBusScreen> {
           if (state is AdminBusLoaded) {
             if (state.buses.isEmpty) {
               return const Center(
-                child: Text('No buses found'),
+                child: Text(
+                  'No bus routes found',
+                  style: TextStyle(
+                    color: AppColors.grey,
+                  ),
+                ),
               );
             }
 
             return ListView.builder(
+              padding: const EdgeInsets.all(16),
               itemCount: state.buses.length,
               itemBuilder: (context, index) {
                 final bus = state.buses[index];
 
                 return Card(
-                  margin: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.only(
+                    bottom: 12,
+                  ),
                   child: ListTile(
-                    leading: const Icon(
-                      Icons.directions_bus,
+                    contentPadding: const EdgeInsets.all(12),
+
+                    leading: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: const Icon(
+                        Icons.directions_bus_rounded,
+                        color: AppColors.cream,
+                      ),
                     ),
-                    title: Text(bus.busNumber),
+
+                    title: Text(
+                      'Bus ${bus.busNumber}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
+                      ),
+                    ),
+
                     subtitle: Text(
-                      '${bus.route}\n${bus.departureTime}',
+                      '${bus.route}\n'
+                          'Departure: ${bus.departureTime}',
                     ),
+
                     isThreeLine: true,
+
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -158,15 +207,19 @@ class _ManageBusScreenState extends State<ManageBusScreen> {
                           onPressed: () {
                             updateBus(bus);
                           },
-                          icon: const Icon(Icons.edit),
+                          icon: const Icon(
+                            Icons.edit_rounded,
+                            color: AppColors.primary,
+                          ),
                         ),
+
                         IconButton(
                           onPressed: () {
                             deleteBus(bus.id);
                           },
                           icon: const Icon(
-                            Icons.delete,
-                            color: Colors.red,
+                            Icons.delete_outline_rounded,
+                            color: AppColors.red,
                           ),
                         ),
                       ],
