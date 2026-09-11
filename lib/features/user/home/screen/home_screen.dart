@@ -29,13 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
       initialTime: TimeOfDay.now(),
     );
 
-    if (time == null || !mounted) {
-      return;
-    }
+    if (time == null || !mounted) return;
 
     final now = DateTime.now();
 
-    DateTime reminderDateTime = DateTime(
+    DateTime reminderTime = DateTime(
       now.year,
       now.month,
       now.day,
@@ -43,15 +41,15 @@ class _HomeScreenState extends State<HomeScreen> {
       time.minute,
     );
 
-    if (reminderDateTime.isBefore(now)) {
-      reminderDateTime = reminderDateTime.add(
+    if (reminderTime.isBefore(now)) {
+      reminderTime = reminderTime.add(
         const Duration(days: 1),
       );
     }
 
     context.read<HomeBloc>().add(
       ReminderTimeSelected(
-        reminderTime: reminderDateTime,
+        reminderTime: reminderTime,
       ),
     );
   }
@@ -69,18 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
-          if (state is ReminderSuccess) {
+          if (state is ReminderSuccess || state is HomeFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.message),
-              ),
-            );
-          }
-
-          if (state is HomeFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
+                content: Text(
+                  state is ReminderSuccess
+                      ? state.message
+                      : (state as HomeFailure).message,
+                ),
               ),
             );
           }
@@ -117,26 +111,50 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Find Your Bus 🚌',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+
+                  // Top Card
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
                       color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    child: const Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Hi👋!  Find Your Bus 🚌',
+                                style: TextStyle(
+                                  color: AppColors.cream,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                'Choose your route',
+                                style: TextStyle(
+                                  color: AppColors.cream,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(
+                          Icons.directions_bus_rounded,
+                          color: AppColors.cream,
+                          size: 45,
+                        ),
+                      ],
                     ),
                   ),
 
-                  const SizedBox(height: 6),
-
-                  const Text(
-                    'Choose a route for your journey.',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.grey,
-                    ),
-                  ),
-
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 20),
 
                   const Text(
                     'Available Routes',
@@ -147,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 10),
 
                   // Bus List
                   ...state.buses.map(
@@ -160,7 +178,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           bottom: 12,
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
+                          borderRadius:
+                          BorderRadius.circular(18),
                           side: BorderSide(
                             color: selected
                                 ? AppColors.primary
@@ -170,7 +189,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: RadioListTile<String>(
                           value: bus.id,
-                          groupValue: state.selectedBusId,
+                          groupValue:
+                          state.selectedBusId,
+                          activeColor:
+                          AppColors.primary,
                           onChanged: (value) {
                             if (value == null) return;
 
@@ -180,12 +202,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             );
                           },
-                          activeColor: AppColors.primary,
-                          contentPadding:
-                          const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
                           secondary: Container(
                             height: 50,
                             width: 50,
@@ -203,7 +219,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             'Bus ${bus.busNumber}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
                               color: AppColors.primary,
                             ),
                           ),
@@ -216,12 +231,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
 
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 10),
 
-                  // Reminder
+                  // Reminder Card
                   Card(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius:
+                      BorderRadius.circular(18),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(18),
@@ -229,6 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         crossAxisAlignment:
                         CrossAxisAlignment.start,
                         children: [
+
                           const Row(
                             children: [
                               Icon(
@@ -252,14 +269,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           const Text(
                             'Set a reminder for your selected bus.',
                             style: TextStyle(
-                              fontSize: 13,
                               color: AppColors.grey,
                             ),
                           ),
 
-                          const SizedBox(height: 18),
+                          const SizedBox(height: 15),
 
-                          // Time Button
+                          // Select Time
                           SizedBox(
                             width: double.infinity,
                             height: 50,
@@ -274,9 +290,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     : formatTime(
                                   state.selectedReminderTime!,
                                 ),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
                               ),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor:
@@ -284,7 +297,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 side: const BorderSide(
                                   color: AppColors.primary,
                                 ),
-                                shape: RoundedRectangleBorder(
+                                shape:
+                                RoundedRectangleBorder(
                                   borderRadius:
                                   BorderRadius.circular(14),
                                 ),
@@ -297,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           // Set Reminder
                           SizedBox(
                             width: double.infinity,
-                            height: 52,
+                            height: 50,
                             child: ElevatedButton.icon(
                               onPressed: () {
                                 context.read<HomeBloc>().add(
@@ -310,7 +324,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               label: const Text(
                                 'Set Reminder',
                                 style: TextStyle(
-                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -319,7 +332,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 AppColors.primary,
                                 foregroundColor:
                                 AppColors.cream,
-                                shape: RoundedRectangleBorder(
+                                shape:
+                                RoundedRectangleBorder(
                                   borderRadius:
                                   BorderRadius.circular(14),
                                 ),
@@ -330,8 +344,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-
-                  const SizedBox(height: 15),
                 ],
               ),
             );

@@ -89,7 +89,7 @@ class NotificationService {
 
         await showNotification(
           title: title,
-          body: body,
+          body: "Test kr saud : $body",
         );
       },
     );
