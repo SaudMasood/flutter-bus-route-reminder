@@ -84,7 +84,7 @@ class NotificationService {
 
   static Future<void> initializeLocalNotifications() async {
     const androidSettings = AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
+      'bus_notification',
     );
 
     const settings = InitializationSettings(

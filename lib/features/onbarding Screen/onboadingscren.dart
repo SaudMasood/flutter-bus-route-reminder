@@ -18,7 +18,6 @@ class OnboardingScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 30),
 
-              // Top Logo
               Row(
                 children: [
                   Container(
@@ -28,10 +27,12 @@ class OnboardingScreen extends StatelessWidget {
                       color: AppColors.primary,
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    child: const Icon(
-                      Icons.directions_bus_rounded,
-                      color: AppColors.cream,
-                      size: 26,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(14),
+                      child: Image.asset(
+                        'assets/logo/logo.png',
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
 
@@ -50,7 +51,7 @@ class OnboardingScreen extends StatelessWidget {
 
               const Spacer(),
 
-              // Main Bus Illustration
+              // Main Logo Illustration
               Container(
                 height: 220,
                 width: double.infinity,
@@ -58,16 +59,28 @@ class OnboardingScreen extends StatelessWidget {
                   color: AppColors.primary,
                   borderRadius: BorderRadius.circular(35),
                 ),
-                child: const Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.directions_bus_rounded,
-                      size: 105,
-                      color: AppColors.cream,
+                    Container(
+                      height: 105,
+                      width: 105,
+                      decoration: BoxDecoration(
+                        color: AppColors.cream,
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(25),
+                        child: Image.asset(
+                          'assets/logo/logo.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 12),
-                    Text(
+
+                    const SizedBox(height: 12),
+
+                    const Text(
                       'Your Journey, Simplified',
                       style: TextStyle(
                         color: AppColors.cream,

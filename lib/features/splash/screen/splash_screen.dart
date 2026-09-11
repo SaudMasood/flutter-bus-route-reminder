@@ -39,7 +39,6 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Logo
               Container(
                 height: 120,
                 width: 120,
@@ -47,16 +46,17 @@ class _SplashScreenState extends State<SplashScreen> {
                   color: AppColors.cream,
                   borderRadius: BorderRadius.circular(35),
                 ),
-                child: const Icon(
-                  Icons.directions_bus_rounded,
-                  size: 65,
-                  color: AppColors.primary,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(35),
+                  child: Image.asset(
+                    'assets/logo/logo.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
 
               const SizedBox(height: 28),
 
-              // App Name
               Text(
                 AppConstants.appName,
                 textAlign: TextAlign.center,
