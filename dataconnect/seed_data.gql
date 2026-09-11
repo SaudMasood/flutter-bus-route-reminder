@@ -1,0 +1,27 @@
+mutation SeedDatabase @transaction {
+  user_insertMany(data: [
+    { email: "alice@example.com", displayName: "Alice" },
+    { email: "bob@example.com", displayName: "Bob" },
+    { email: "charlie@example.com", displayName: "Charlie" }
+  ])
+  skill_insertMany(data: [
+    { title: "GraphQL Mastery", targetDate: "2025-12-01", user: { id: "00000000-0000-0000-0000-000000000001" }, category: "Tech" },
+    { title: "Public Speaking", targetDate: "2025-06-15", user: { id: "00000000-0000-0000-0000-000000000002" }, category: "Soft Skills" },
+    { title: "Rust Programming", targetDate: "2026-01-20", user: { id: "00000000-0000-0000-0000-000000000003" }, category: "Tech" }
+  ])
+  unit_insertMany(data: [
+    { title: "Queries", orderIndex: 1, skill: { id: "00000000-0000-0000-0000-000000000001" } },
+    { title: "Mutations", orderIndex: 2, skill: { id: "00000000-0000-0000-0000-000000000001" } },
+    { title: "Foundations", orderIndex: 1, skill: { id: "00000000-0000-0000-0000-000000000002" } }
+  ])
+  resource_insertMany(data: [
+    { title: "Docs", url: "https://graphql.org", unit: { id: "00000000-0000-0000-0000-000000000001" }, type: "Web" },
+    { title: "Video", url: "https://youtube.com", unit: { id: "00000000-0000-0000-0000-000000000001" }, type: "Video" },
+    { title: "Cheat Sheet", url: "https://example.com", unit: { id: "00000000-0000-0000-0000-000000000003" }, type: "PDF" }
+  ])
+  progressLog_insertMany(data: [
+    { dateStudied: "2024-05-01", durationMinutes: 60, unit: { id: "00000000-0000-0000-0000-000000000001" } },
+    { dateStudied: "2024-05-02", durationMinutes: 45, unit: { id: "00000000-0000-0000-0000-000000000001" } },
+    { dateStudied: "2024-05-03", durationMinutes: 30, unit: { id: "00000000-0000-0000-0000-000000000003" } }
+  ])
+}

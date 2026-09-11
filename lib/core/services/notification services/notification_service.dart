@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+
+
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(
     RemoteMessage message,
@@ -22,6 +24,9 @@ Future<void> firebaseMessagingBackgroundHandler(
   print('Title: $title');
   print('Body: $body');
 }
+
+
+
 class NotificationService {
   static final FirebaseMessaging messaging =
       FirebaseMessaging.instance;
@@ -91,7 +96,7 @@ class NotificationService {
     );
   }
 
-  // NOTIFICATION PERMISSION
+  // NOTIFICATION PERMISSION Firebase
 
   static Future<void> requestNotificationPermission() async {
     if (kIsWeb) {
@@ -238,8 +243,6 @@ class NotificationService {
       SetOptions(merge: true),
     );
   }
-
-
   // TOKEN REFRESH
 
   static void listenForTokenRefresh() {

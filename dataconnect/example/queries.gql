@@ -1,0 +1,96 @@
+mutation CreateUser {
+  user_insert(data: { id_expr: "auth.uid", email: "user@example.com", displayName: "New User" })
+}
+
+mutation UpdateUser($data: User_Data!) @auth(level: USER) {
+  user_update(key: { id_expr: "auth.uid" }, data: $data)
+}
+
+query GetCurrentUser @auth(level: USER) {
+  user(key: { id_expr: "auth.uid" }) {
+    email
+    displayName
+    avatarUrl
+    bio
+  }
+}
+
+mutation CreateSkill($title: String!, $targetDate: Date!) @auth(level: USER) {
+  skill_insert(data: { title: $title, targetDate: $targetDate, userId_expr: "auth.uid" })
+}
+
+mutation UpdateSkill($id: UUID!, $data: Skill_Data!) @auth(level: USER) {
+  skill_update(id: $id, data: $data)
+}
+
+mutation DeleteSkill($id: UUID!) @auth(level: USER) {
+  skill_delete(id: $id)
+}
+
+query ListMySkills @auth(level: USER) {
+  skills(where: { userId: { eq_expr: "auth.uid" } }) {
+    id
+    title
+    targetDate
+  }
+}
+
+mutation CreateUnit($title: String!, $skillId: UUID!, $orderIndex: Int!) @auth(level: USER) {
+  unit_insert(data: { title: $title, skillId: $skillId, orderIndex: $orderIndex })
+}
+
+mutation UpdateUnit($id: UUID!, $data: Unit_Data!) @auth(level: USER) {
+  unit_update(id: $id, data: $data)
+}
+
+mutation DeleteUnit($id: UUID!) @auth(level: USER) {
+  unit_delete(id: $id)
+}
+
+query GetUnit($id: UUID!) @auth(level: USER) {
+  unit(id: $id) {
+    title
+    orderIndex
+    isCompleted
+  }
+}
+
+mutation CreateResource($title: String!, $url: String!, $unitId: UUID!) @auth(level: USER) {
+  resource_insert(data: { title: $title, url: $url, unitId: $unitId })
+}
+
+mutation UpdateResource($id: UUID!, $data: Resource_Data!) @auth(level: USER) {
+  resource_update(id: $id, data: $data)
+}
+
+mutation DeleteResource($id: UUID!) @auth(level: USER) {
+  resource_delete(id: $id)
+}
+
+query ListResources($unitId: UUID!) @auth(level: USER) {
+  resources(where: { unitId: { eq: $unitId } }) {
+    title
+    url
+    type
+  }
+}
+
+mutation CreateProgressLog($unitId: UUID!, $dateStudied: Date!, $duration: Int!) @auth(level: USER) {
+  progressLog_insert(data: { unitId: $unitId, dateStudied: $dateStudied, durationMinutes: $duration })
+}
+
+mutation UpdateProgressLog($id: UUID!, $data: ProgressLog_Data!) @auth(level: USER) {
+  progressLog_update(id: $id, data: $data)
+}
+
+mutation DeleteProgressLog($id: UUID!) @auth(level: USER) {
+  progressLog_delete(id: $id)
+}
+
+query ListLogs($unitId: UUID!) @auth(level: USER) {
+  progressLogs(where: { unitId: { eq: $unitId } }) {
+    dateStudied
+    durationMinutes
+    notes
+  }
+}

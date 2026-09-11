@@ -1,0 +1,36 @@
+type User @table {
+  email: String!
+  displayName: String!
+  avatarUrl: String
+  bio: String
+}
+
+type Skill @table {
+  title: String!
+  targetDate: Date!
+  user: User!
+  description: String
+  category: String
+}
+
+type Unit @table {
+  title: String!
+  skill: Skill!
+  orderIndex: Int!
+  isCompleted: Boolean
+  completionDate: Date
+}
+
+type Resource @table {
+  title: String!
+  url: String!
+  unit: Unit!
+  type: String
+}
+
+type ProgressLog @table {
+  unit: Unit!
+  dateStudied: Date!
+  durationMinutes: Int!
+  notes: String
+}
